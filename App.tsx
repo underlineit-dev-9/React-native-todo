@@ -75,6 +75,7 @@ function App(): JSX.Element {
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
+
           }}>
           
          
