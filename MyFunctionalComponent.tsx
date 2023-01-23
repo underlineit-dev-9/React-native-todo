@@ -1,15 +1,15 @@
 import React from 'react';
 import {useState} from 'react';
-import {Text, View, Button, TextInput} from 'react-native';
+import {Text, View, Button, TextInput,Image,TouchableOpacity} from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 interface Props {
   task: string;
   index: number;
   onPress1: (arg: number) => void;
   onPress2: (arg1: number, arg2: string) => void;
+  sourse:any;
 }
 
-//   onPress:()=>void;
 
 const MyFunctionalComponent: React.FC<Props> = props => {
   const [canEdit, setCanEdit] = useState(false);
@@ -24,7 +24,13 @@ const MyFunctionalComponent: React.FC<Props> = props => {
               setEditedTask(text);
             }}
           />
-          <Button
+           <TouchableOpacity  onPress={() => {
+              props.onPress2(props.index, editedTask);
+              setCanEdit(false);
+            }}>
+                <Image source={require('.\icons\submit.png')} />
+            </TouchableOpacity>
+          {/* <Button
             title="Submit"
             accessibilityLabel="submiting task"
             onPress={() => {
@@ -32,7 +38,7 @@ const MyFunctionalComponent: React.FC<Props> = props => {
               setCanEdit(false);
             }}
             color="green"
-          />
+          /> */}
           <Button
           
             title="Cancel"
