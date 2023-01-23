@@ -34,6 +34,7 @@ const MyFunctionalComponent: React.FC<Props> = props => {
             color="green"
           />
           <Button
+          
             title="Cancel"
             accessibilityLabel="submiting task"
             onPress={() => setCanEdit(false)}
