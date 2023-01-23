@@ -1,97 +1,109 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import {useState} from 'react';
+import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
+import Task from './task';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+export type Props = {
+  name: string;
+  baseEnthusiasmLevel?: number;
+};
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+const App: React.FC<Props> = ({
+  name,
+  baseEnthusiasmLevel = 0,
+}) => {
+ 
+  const [tasks, setTasks] = useState(['task 1','task 2','task 3','task 4']);
+  const [newTask, setNewTask] = useState("hii");
+  const [canEdit,setCanEdit] = useState(false);
+  const [editedTask,setEditedTask]=useState('')
 
-// function Section({children, title}: SectionProps): JSX.Element {
-//   const isDarkMode = useColorScheme() === 'dark';
-//   return (
-//     <View style={styles.sectionContainer}>
-//       <Text
-//         style={[
-//           styles.sectionTitle,
-//           {
-//             color: isDarkMode ? Colors.white : Colors.black,
-//           },
-//         ]}>
-//         {title}
-//       </Text>
-//       <Text
-//         style={[
-//           styles.sectionDescription,
-//           {
-//             color: isDarkMode ? Colors.light : Colors.dark,
-//           },
-//         ]}>
-//         {children}
-//       </Text>
-//     </View>
-//   );
-// }
-
-function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  function deleteHandler(index:any) {
+    const tempArray =tasks.filter((element) => {
+      return tasks.indexOf(element) !== index;
+    });
+    
+    setTasks(tempArray);
+  }
+  function submitHandler(newTask:any, index:number) {
+    
+    
+    
+    setTasks([tasks.slice(0,index),newTask,tasks.slice(index+1)])
+    
+  }
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+    <View style={styles.container}>
+      <Text style={styles.greeting}>
+        Todo Management System s{name}
+      </Text>
+  
+      <TextInput style={{borderWidth:1}} value={newTask} placeholder={'enter a text'} onChangeText={text=>setNewTask(text)} />
 
-          }}>
-          
-         
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+      <Button
+          title="Add"
+          accessibilityLabel=""
+          onPress={()=>{setTasks([...tasks,newTask])
+          setNewTask("")}}
+          color="green"
+        />
+      <View>
+        {tasks.map((task, index) => (
+          <View>
+            {canEdit?(<View>
+              <TextInput style={{borderWidth:1}} value={task} placeholder={'enter a text'} onChangeText={text=>setEditedTask(text)} />
+              <Button
+          title="Submit"
+          accessibilityLabel=""
+          onPress={()=>{submitHandler(editedTask,index)
+          setEditedTask("")
+        setCanEdit(false)}}
+          color="green"
+        />
+        <Button
+          title="Cancel"
+          accessibilityLabel=""
+          onPress={()=>{setCanEdit(false)}}
+          color="red"
+        />
+            </View>):(<View>
+            <Text>{index+1} { " "}{task}</Text>
+            <Button
+          title="Delete"
+          accessibilityLabel=""
+          onPress={()=>deleteHandler(index)}
+          color="red"
+        />
+        <Button
+          title="Edit"
+          accessibilityLabel=""
+          onPress={()=>editHandler(index)}
+          color="red"
+        />
+            </View>
+            
+          )}
+      </View>
+      
+      
+    
+    </View>
+    
   );
-}
+};
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
- 
+  greeting: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    margin: 16,
+  },
 });
 
 export default App;
