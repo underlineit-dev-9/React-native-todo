@@ -5,7 +5,8 @@ import MyFunctionalComponent from './MyFunctionalComponent';
 
 
 const App: React.FC = () => {
-  const [tasks, setTasks] = useState(['task 1','task 2','task 3','task 4']);
+  let  i=1;
+  const [tasks, setTasks] = useState([{task:'task 1',taskId:i++},{task:'task 2',taskId:i++},{task:'task 3',taskId:i++},{task:'task 4',taskId:i++}]);
   const [newTask,setNewTask] = useState('')
 
   function deleteHandler(index:any) {
@@ -15,8 +16,14 @@ const App: React.FC = () => {
     setTasks(tempArray)
   }
   function submitHandler(index:number,editedTask:any) {
-
-    setTasks([...tasks.slice(0,index),editedTask,...tasks.slice(index+1)])
+    let tempObject=[]
+    for(let element of tasks){
+      if(tasks.indexOf(element)===index){
+        element.task=editedTask;
+      }
+      tempObject.push(element)
+    }
+    setTasks(tempObject)
     
   }
 
@@ -31,12 +38,12 @@ const App: React.FC = () => {
             <Button
             title='Add'
             accessibilityLabel='submiting task'
-            onPress={()=>{setTasks([...tasks,newTask])
+            onPress={()=>{setTasks([...tasks,{task:newTask,taskId:i++}])
             setNewTask('')}} 
             />
 
-      {tasks.map((task:any,index:any)=>(
-        <MyFunctionalComponent task={task} index={index} onPress1={deleteHandler} onPress2={submitHandler}/>
+      {tasks.map((element:any,index:any)=>(
+        <MyFunctionalComponent task={element.task} key={element.taskId} index={index} onPress1={deleteHandler} onPress2={submitHandler}/>
       ))}
     </View>
     
