@@ -1,6 +1,7 @@
 import React from 'react';
 import {useState} from 'react';
 import {Text, View, Button, TextInput,Image,TouchableOpacity} from 'react-native';
+import { styles } from './App';
 interface Props {
   task: string;
   key:number;
@@ -15,55 +16,42 @@ const MyFunctionalComponent: React.FC<Props> = props => {
   const [canEdit, setCanEdit] = useState(false);
   const [editedTask, setEditedTask] = useState(props.task);
   return (
-    <View>
+    <View >
       {canEdit ? (
-        <View>
-          <TextInput
+        <View style={styles.flex}>
+          <TextInput style={styles.inputBox}
             value={editedTask}
             onChangeText={text => {
               setEditedTask(text);
             }}
           />
-           {/* <TouchableOpacity  onPress={() => {
+            <TouchableOpacity  onPress={() => {
               props.onPress2(props.index, editedTask);
               setCanEdit(false);
             }}>
-                <Image source={require('.\icons\submit.png')} />
-            </TouchableOpacity> */}
-          <Button
-            title="Submit"
-            accessibilityLabel="submiting task"
-            onPress={() => {
-              props.onPress2(props.index, editedTask);
-              setCanEdit(false);
-            }}
-            color="green"
-          />
-          <Button
-          
-            title="Cancel"
-            accessibilityLabel="submiting task"
-            onPress={() => setCanEdit(false)}
-            color='orange'
-          />
+                <Image style={styles.images} source={require('./icons/submit.png')} />
+            </TouchableOpacity>
+
+            <TouchableOpacity  onPress={() => setCanEdit(false)}>
+                <Image style={styles.images} source={require('./icons/cancel.png')} />
+            </TouchableOpacity>
         </View>
       ) : (
-        <View>
-          <Text>
-            {props.index + 1} {props.task} ID :{props.key}
+        <View >
+          <View >
+          <Text style={styles.taskDisplay} >
+            {props.index + 1} {props.task}
           </Text>
-          <Button
-            title="Edit"
-            accessibilityLabel="decrement"
-            onPress={() => setCanEdit(true)}
-            color="blue"
-          />
-          <Button
-            title="Delete"
-            accessibilityLabel="decrement"
-            onPress={() => props.onPress1(props.index)}
-            color="red"
-          />
+        </View>
+        <View style={styles.flex}>
+          <TouchableOpacity  onPress={() => setCanEdit(true)}>
+                <Image style={{height:40,width:40}} source={require('./icons/edit.png')} />
+            </TouchableOpacity>
+
+            <TouchableOpacity  onPress={() => props.onPress1(props.index)}>
+                <Image style={styles.images} source={require('./icons/delete.png')} />
+            </TouchableOpacity>
+      </View>
         </View>
       )}
     </View>
